@@ -36,13 +36,14 @@ void DrawingCanvas::OnPaint(wxPaintEvent&)
 
     if (gc)
     {
-        for (const auto& pointsVector : squiggles)
+        for (const auto &s : squiggles)
         {
+            auto pointsVector = s.points;
             if (pointsVector.size() > 1)
             {
                 gc->SetPen(wxPen( 
-                    *wxBLACK,
-                    this->FromDIP(8)));
+                    s.color,
+                    s.width));
                 gc->StrokeLines(pointsVector.size(), pointsVector.data());
             }
         }
@@ -51,9 +52,9 @@ void DrawingCanvas::OnPaint(wxPaintEvent&)
     }
 }
 
-void DrawingCanvas::OnMouseDown(wxMouseEvent&)
+void DrawingCanvas::OnMouseDown(wxMouseEvent &)
 {
-    squiggles.push_back({});
+    squiggles.push_back({{}, currentColor, currentWidth });
     isDrawing = true;
 }
 
@@ -68,7 +69,7 @@ void DrawingCanvas::OnMouseMove(wxMouseEvent& event)
         auto pt = event.GetPosition();
         auto& currentSquiggle = squiggles.back();
 
-        currentSquiggle.push_back(pt);
+        currentSquiggle.points.push_back(pt);
         Refresh();
     }
 }
