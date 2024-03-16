@@ -23,8 +23,8 @@ DrawingCanvas::DrawingCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos
 }
 
 /* 
-    Connects the points where mouse clicks are registered to
-    simulate a line being drawn
+    Sets the background of the canvas to white
+    and calls on DrawOnContext to create "lines"
 */
 void DrawingCanvas::OnPaint(wxPaintEvent&)
 {
@@ -36,20 +36,63 @@ void DrawingCanvas::OnPaint(wxPaintEvent&)
 
     if (gc)
     {
-        for (const auto &s : squiggles)
-        {
-            auto pointsVector = s.points;
-            if (pointsVector.size() > 1)
-            {
-                gc->SetPen(wxPen( 
-                    s.color,
-                    s.width));
-                gc->StrokeLines(pointsVector.size(), pointsVector.data());
-            }
-        }
+        DrawOnContext(gc);
 
         delete gc;
     }
+}
+
+/*
+    Connects the points where mouse clicks are registered to
+    simulate a line being drawn
+*/
+void DrawingCanvas::DrawOnContext(wxGraphicsContext *gc)
+{
+    for (const auto& s : squiggles)
+    {
+        auto pointsVector = s.points;
+        if (pointsVector.size() > 1)
+        {
+            gc->SetPen(wxPen(
+                s.color,
+                s.width));
+            gc->StrokeLines(pointsVector.size(), pointsVector.data());
+        }
+    }
+}
+
+/*
+    Function that allows the user to save their drawing
+    from the canvas as a .png file
+*/
+
+void DrawingCanvas::ShowSaveDialog()
+{
+    wxFileDialog saveFileDialog(this, _("Save drawing"), "", "",
+                                "PNG files (*.png)|*.png", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (saveFileDialog.ShowModal() == wxID_CANCEL)
+        return;
+
+    wxBitmap bitmap(this->GetSize() * this->GetContentScaleFactor());
+
+    wxMemoryDC memDC;
+
+    memDC.SetUserScale(this->GetContentScaleFactor(), this->GetContentScaleFactor());
+
+    memDC.SelectObject(bitmap);
+    memDC.SetBackground(*wxWHITE_BRUSH);
+    memDC.Clear();
+
+    wxGraphicsContext* gc = wxGraphicsContext::Create(memDC);
+
+    if (gc)
+    {
+        DrawOnContext(gc);
+        delete gc;
+    }
+
+    bitmap.SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
 }
 
 void DrawingCanvas::OnMouseDown(wxMouseEvent &)
@@ -87,7 +130,7 @@ void DrawingCanvas::OnMouseLeave(wxMouseEvent&)
 void DrawingCanvas::BuildContextMenu()
 {
     auto clear = contextMenu.Append(wxID_ANY, "&Clear");
-    contextMenu.Append(wxID_ANY, "Save &As...");
+    auto save = contextMenu.Append(wxID_ANY, "Save &As...");
 
     this->Bind(
         wxEVT_MENU,
@@ -97,6 +140,14 @@ void DrawingCanvas::BuildContextMenu()
             this->Refresh();
         },
         clear->GetId());
+
+    this->Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            this->ShowSaveDialog();
+        },
+        save->GetId());
 }
 
 void DrawingCanvas::OnContextMenuEvent(wxContextMenuEvent& e)
