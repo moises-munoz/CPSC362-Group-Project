@@ -107,7 +107,7 @@ wxPanel* MyFrame::BuildControlsPanel(wxWindow* parent)
 	controlsPanel->SetScrollRate(0, FromDIP(10));
 
 	bool isDark = wxSystemSettings::GetAppearance().IsDark();
-	controlsPanel->SetBackgroundColour(wxColor(isDark ? darkBackground : lightBackground));
+	controlsPanel->SetBackgroundColour(wxColour(isDark ? darkBackground : lightBackground));
 
 	auto mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -126,17 +126,27 @@ wxPanel* MyFrame::BuildControlsPanel(wxWindow* parent)
 	SetUpPenPanes(controlsPanel, penPaneSizer);
 	mainSizer->Add(penPaneSizer, 0, wxALL, FromDIP(5));
 
-	auto button = new wxButton(controlsPanel, wxID_ANY, "Save As...");
+	auto pngbutton = new wxButton(controlsPanel, wxID_ANY, "Save as png");
+	auto xmlbutton = new wxButton(controlsPanel, wxID_ANY, "Save as xml");
+	auto loadbutton = new wxButton(controlsPanel, wxID_ANY, "Load xml file");
 
 	mainSizer->AddStretchSpacer();
-	mainSizer->Add(button, 0, wxALL, FromDIP(5));
+	mainSizer->Add(pngbutton, 0, wxALL, FromDIP(5));
+	mainSizer->Add(xmlbutton, 0, wxALL, FromDIP(5));
+	mainSizer->Add(loadbutton, 0, wxALL, FromDIP(5));
 	mainSizer->AddSpacer(FromDIP(5));
 
 	controlsPanel->SetSizer(mainSizer);
 
-	button->Bind(wxEVT_BUTTON, [this](wxCommandEvent& EVENT)
+	pngbutton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& EVENT)
 				{canvas->ShowSaveDialog();});
 
+	xmlbutton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& EVENT)
+		{canvas->SaveToXml(); });
+
+	loadbutton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& EVENT)
+		{canvas->LoadFromXml(); });
+		
 	return controlsPanel;
 }
 

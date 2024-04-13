@@ -1,6 +1,7 @@
 #pragma once
 #include <wx/wx.h>
 #include <vector>
+#include "xmlserializer.h"
 #include "path.h"
 
 /*
@@ -17,8 +18,21 @@ public:
 
     void ShowSaveDialog();
 
+    XmlSerializer serializer{};
+
+    void SaveToXml();
+    void LoadFromXml();
+
     int currentWidth{ 1 };
     wxColour currentColor{ *wxBLACK };
+
+    const std::vector<Path>& GetSquiggles() const { return squiggles; }
+
+    void SetSquiggles(const std::vector<Path>&& squiggles)
+    {
+        this->squiggles = std::move(squiggles);
+        Refresh();
+    }
 
 private:
     void OnPaint(wxPaintEvent&);

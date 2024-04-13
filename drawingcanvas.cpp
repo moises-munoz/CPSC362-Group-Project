@@ -2,6 +2,7 @@
 #include <wx/dcbuffer.h>
 #include "drawingcanvas.h"
 
+
 /*
     Binds the mouse events to be detected on the canvas
 */
@@ -95,6 +96,42 @@ void DrawingCanvas::ShowSaveDialog()
     bitmap.SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
 }
 
+
+//function to save our painting as an xml file
+
+void DrawingCanvas::SaveToXml()
+{
+    wxFileDialog xmlFileDialog(this, "Save as xml", "", "",
+        "PX files (*.px)|*.px", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (xmlFileDialog.ShowModal() == wxID_CANCEL)
+        return;
+    auto doc = serializer.SerializePaths(GetSquiggles());
+    doc.Save(xmlFileDialog.GetPath());
+}
+
+//function to load our painting as an xml file
+
+void DrawingCanvas::LoadFromXml()
+{
+    wxFileDialog loadFileDialog(this, "Load xml", "", "",
+        "PX files (*.px)|*.px", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+    if (loadFileDialog.ShowModal() == wxID_CANCEL)
+        return;
+
+    wxXmlDocument doc;
+
+    if (!doc.Load(loadFileDialog.GetPath()))
+    {
+        wxMessageBox("Failed to load file");
+        return;
+    }
+
+    SetSquiggles(serializer.DeserializePaths(doc));
+}
+
+
 void DrawingCanvas::OnMouseDown(wxMouseEvent &)
 {
     squiggles.push_back({{}, currentColor, currentWidth });
@@ -126,6 +163,12 @@ void DrawingCanvas::OnMouseLeave(wxMouseEvent&)
 {
     isDrawing = false;
 }
+
+/*
+    Function that allows the user to clear the
+    canvas or save the image on the canvas by
+    right-clicking on the canvas
+*/
 
 void DrawingCanvas::BuildContextMenu()
 {
