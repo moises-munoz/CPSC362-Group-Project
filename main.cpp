@@ -29,9 +29,11 @@ private:
 
 	void SetUpColorPanes(wxWindow* parent, wxSizer* sizer);
 	void SetUpPenPanes(wxWindow* parent, wxSizer* sizer);
-
+	
 	void SelectColorPane(ColorPane *pane);
 	void SelectPenPane(PenSizePane *pane);
+	
+	void SetupMainMenu();
 
 	std::vector<ColorPane *> colorPanes{};
 	std::vector<PenSizePane*> penPanes{};
@@ -174,6 +176,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 
 	SelectColorPane(colorPanes[0]);
 	SelectPenPane(penPanes[0]);
+	SetupMainMenu();
 }
 
 /* 
@@ -205,4 +208,31 @@ void MyFrame::SelectPenPane(PenSizePane* pane)
 	}
 
 	canvas->currentWidth = pane->penWidth;
+}
+
+/*
+	Fucntion to set up the Menu Bar
+*/
+void MyFrame::SetupMainMenu()
+{	
+	//Menu Bar 
+	wxMenuBar* menuBar = new wxMenuBar();
+
+	//File Menu
+	wxMenu* fileMenu = new wxMenu();
+	fileMenu->Append(wxID_NEW); // Create a New Canvas
+	fileMenu->Append(wxID_OPEN); // Open an existing Image
+	fileMenu->AppendSeparator();
+	fileMenu->Append(wxID_SAVEAS); // Save Image
+	fileMenu->Append(wxID_EXIT); // Exit Program
+
+	menuBar->Append(fileMenu, "File");
+	
+	//Edit Menu
+	wxMenu* editMenu = new wxMenu();
+	editMenu->Append(wxID_UNDO, "&Undo\tCtrl+Z");
+	editMenu->Append(wxID_REDO, "&Redo\tCtrl+Y");
+
+	menuBar->Append(editMenu, "Edit");
+	SetMenuBar(menuBar);
 }
