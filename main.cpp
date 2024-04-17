@@ -20,11 +20,6 @@ wxIMPLEMENT_APP(MyApp);
 	The MyFrame class represents our main window
 */
 
-enum IDs {
-	SAVE_AS_PNG_ID = 2,
-    SAVE_AS_XML_ID = 3
-};
-
 class MyFrame : public wxFrame
 {
 public:
