@@ -3,6 +3,7 @@
 #include <wx/splitter.h>
 #include <string>
 #include <vector>
+#include "path.h"
 #include "colorpane.h"
 #include "pensizepane.h"
 #include "drawingcanvas.h"
@@ -19,10 +20,37 @@ wxIMPLEMENT_APP(MyApp);
 	The MyFrame class represents our main window
 */
 
+enum IDs {
+	SAVE_AS_PNG_ID = 2,
+    SAVE_AS_XML_ID = 3
+};
+
 class MyFrame : public wxFrame
 {
 public:
 	MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+
+
+	//Restarts the Application 
+	void OnNew(wxCommandEvent& event) {
+		wxExecute(wxTheApp->argv[0]);
+		Close(true);
+	}
+	//Saves the drawing as PNG
+	void SaveAsPNG(wxCommandEvent& event) {
+		canvas->ShowSaveDialog();
+	}
+	//Saves the drawing as XML
+	void SaveAsXML(wxCommandEvent& event) {
+		canvas->SaveToXml();
+	}
+	// Handles the Quit Event which closes the Application
+	void OnExit(wxCommandEvent& event) {
+		Close(true);
+	}
+	void OnClear(wxCommandEvent& event) {
+		canvas->ClearSquigs();
+	}
 
 private:
 	wxPanel* BuildControlsPanel(wxWindow* parent);
@@ -39,7 +67,7 @@ private:
 	std::vector<PenSizePane*> penPanes{};
 
 	DrawingCanvas* canvas;
-
+	
 	// vector that contains the list of available colors
 	const std::vector<std::string> niceColors = { "#000000", "#ffffff", "#fd7f6f",
 												"#7eb0d5", "#b2e061", "#bd7ebe",
@@ -177,6 +205,17 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	SelectColorPane(colorPanes[0]);
 	SelectPenPane(penPanes[0]);
 	SetupMainMenu();
+
+	/* MenuBar Event Handling */
+	Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT); // Quit Event
+	Bind(wxEVT_MENU, &MyFrame::OnNew, this, wxID_NEW); // New Event
+	
+	//Save As Events
+	Bind(wxEVT_MENU, &MyFrame::SaveAsPNG, this,wxID_SAVEAS ); // PNG
+	Bind(wxEVT_MENU, &MyFrame::SaveAsXML, this, wxID_SAVE); // XML
+
+	Bind(wxEVT_MENU, &MyFrame::OnClear, this, wxID_DELETE);
+
 }
 
 /* 
@@ -223,7 +262,14 @@ void MyFrame::SetupMainMenu()
 	fileMenu->Append(wxID_NEW); // Create a New Canvas
 	fileMenu->Append(wxID_OPEN); // Open an existing Image
 	fileMenu->AppendSeparator();
-	fileMenu->Append(wxID_SAVEAS); // Save Image
+	
+	//Save As submenu 
+	wxMenu* SaveSubMenu = new wxMenu();
+	SaveSubMenu->Append(wxID_SAVEAS, "Save As PNG");
+	SaveSubMenu->Append(wxID_SAVE, "Save As Xml");
+	fileMenu->AppendSubMenu(SaveSubMenu, "Save As");
+
+
 	fileMenu->Append(wxID_EXIT); // Exit Program
 
 	menuBar->Append(fileMenu, "File");
@@ -232,7 +278,10 @@ void MyFrame::SetupMainMenu()
 	wxMenu* editMenu = new wxMenu();
 	editMenu->Append(wxID_UNDO, "&Undo\tCtrl+Z");
 	editMenu->Append(wxID_REDO, "&Redo\tCtrl+Y");
+	//Custom MenuItem
+	editMenu->Append(wxID_DELETE, _("&Clear"));
 
 	menuBar->Append(editMenu, "Edit");
 	SetMenuBar(menuBar);
 }
+

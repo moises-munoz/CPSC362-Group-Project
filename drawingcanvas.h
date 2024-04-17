@@ -30,8 +30,15 @@ public:
 
     void SetSquiggles(const std::vector<Path>&& squiggles)
     {
-        this->squiggles = std::move(squiggles);
+        this->squiggles = move(squiggles);
         Refresh();
+    }
+
+    void ClearSquigs() {
+        std::vector<Path> squigglesCopy = squiggles;
+        squigglesCopy.clear();
+        this->squiggles = move(squigglesCopy);
+        this->Refresh();
     }
 
 private:
