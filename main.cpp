@@ -260,8 +260,8 @@ void MyFrame::SetupMainMenu()
 	
 	//Save As submenu 
 	wxMenu* SaveSubMenu = new wxMenu();
-	SaveSubMenu->Append(wxID_SAVEAS, "Save As PNG");
-	SaveSubMenu->Append(wxID_SAVE, "Save As Xml");
+	SaveSubMenu->Append(wxID_SAVEAS, "&Save As PNG\tCtrl+S");
+	SaveSubMenu->Append(wxID_SAVE, "&Save As Xml\tCtrl+Alt+S");
 	fileMenu->AppendSubMenu(SaveSubMenu, "Save As");
 
 
@@ -271,10 +271,17 @@ void MyFrame::SetupMainMenu()
 	
 	//Edit Menu
 	wxMenu* editMenu = new wxMenu();
-	editMenu->Append(wxID_UNDO, "&Undo\tCtrl+Z");
-	editMenu->Append(wxID_REDO, "&Redo\tCtrl+Y");
+	//editMenu->Append(wxID_UNDO, "&Undo\tCtrl+Z");
+	//editMenu->Append(wxID_REDO, "&Redo\tCtrl+Y");
 	//Custom MenuItem
-	editMenu->Append(wxID_DELETE, _("&Clear"));
+	editMenu->Append(wxID_DELETE, _("&Clear\tCtrl+D"));
+
+	wxAcceleratorEntry entries[3];
+	entries[0].Set(wxACCEL_CTRL, (int)'D', wxID_DELETE);
+	entries[1].Set(wxACCEL_CTRL, (int)'S', wxID_SAVEAS);
+	entries[2].Set(wxACCEL_CTRL| wxACCEL_ALT, (int)'S', wxID_SAVE);
+	wxAcceleratorTable accel(3, entries);
+	SetAcceleratorTable(accel);
 
 	menuBar->Append(editMenu, "Edit");
 	SetMenuBar(menuBar);
