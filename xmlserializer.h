@@ -20,8 +20,8 @@ struct XmlSerializer
 			for (const auto& point : path.points)
 			{
 				wxXmlNode* pointNode = new wxXmlNode(wxXML_ELEMENT_NODE, "Point");
-				pathNode->AddAttribute("x", wxString::FromDouble(point.m_x));
-				pathNode->AddAttribute("y", wxString::FromDouble(point.m_y));
+				pointNode->AddAttribute("x", wxString::FromDouble(point.m_x));
+				pointNode->AddAttribute("y", wxString::FromDouble(point.m_y));
 				pathNode->AddChild(pointNode);
 			}
 
