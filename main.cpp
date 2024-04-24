@@ -39,6 +39,10 @@ public:
 	void SaveAsXML(wxCommandEvent& event) {
 		canvas->SaveToXml();
 	}
+	//Loads the XML File
+	void OpenXML(wxCommandEvent& event) {
+		canvas->LoadFromXml();
+	}
 	// Handles the Quit Event which closes the Application
 	void OnExit(wxCommandEvent& event) {
 		Close(true);
@@ -203,6 +207,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 
 	/* MenuBar Event Handling */
 	Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT); // Quit Event
+	Bind(wxEVT_MENU, &MyFrame::OpenXML, this, wxID_OPEN); // Open Event
 	Bind(wxEVT_MENU, &MyFrame::OnNew, this, wxID_NEW); // New Event
 	
 	//Save As Events
