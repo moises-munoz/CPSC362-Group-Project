@@ -141,6 +141,8 @@
   <ItemGroup>
     <ClInclude Include="colorpane.h" />
     <ClInclude Include="drawingcanvas.h" />
+    <ClInclude Include="MyFrame.h" />
+    <ClInclude Include="StartWindow.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="pensizepane.h" />
     <ClInclude Include="selectablepane.h" />
