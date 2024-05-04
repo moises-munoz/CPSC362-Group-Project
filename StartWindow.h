@@ -11,7 +11,6 @@ public:
 	StartWindow(const wxString& title, const wxPoint& pos, const wxSize& size)
 		: wxFrame(nullptr, wxID_ANY, title, pos, size) {
 
-
 		SetBackgroundColour(wxColour(187, 143, 206));
 
 		//Fonts
