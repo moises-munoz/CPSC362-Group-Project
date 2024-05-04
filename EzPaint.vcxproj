@@ -142,11 +142,19 @@
     <ClInclude Include="colorpane.h" />
     <ClInclude Include="drawingcanvas.h" />
     <ClInclude Include="MyFrame.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="StartWindow.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="pensizepane.h" />
     <ClInclude Include="selectablepane.h" />
     <ClInclude Include="xmlserializer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EzPaint.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Downloads\paint-bucket_232939.ico" />
+    <Image Include="..\..\..\..\..\Downloads\paint-bucket_232939.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

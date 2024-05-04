@@ -60,9 +60,17 @@ private:
 	DrawingCanvas* canvas;
 
 	// vector that contains the list of available colors
-	const std::vector<std::string> niceColors = { "#000000", "#ffffff", "#fd7f6f",
-												"#7eb0d5", "#b2e061", "#bd7ebe",
-												"#ffb55a", "#ffee65", "#beb9db" };
+	/*
+												  */
+	const std::vector<std::string> niceColors = { /*Black*/"#000000",/*DimGray*/"#696969",/*Silver*/"#C0C0C0",/*White*/"#FFFFFF",
+												  /*Salmon*/"#FA8072",/*Crimson*/"#DC143C",/*Red*/"#FF0000",/*DarkRed*/"#8B0000",
+												  /*Pink*/"#FFC0CB",/*LightPink*/"#FFB6C1",/*HotPink*/"#FF69B4",/*DeepPink*/"#FF1493",
+												  /*LightSalmon*/"#FFA07A",/*Coral*/"#FF7F50",/*Orange*/"#FFA500",/*OrangeRed*/"#FF4500",
+												  /*LemonChiffon*/"#FFFACD",/*Khaki*/"#F0E68C",/*Yellow*/"#FFFF00",/*Gold*/"#FFD700",
+												  /*GreenYellow*/"#ADFF2F",/*LimeGreen*/"#32CD32",/*ForestGreen*/"#228B22",/*DarkGreen*/"#006400",
+												  /*SkyBlue*/"#87CEEB",/*DeepSkyBlue*/"#00BFFF",/*Blue*/"#0000FF",/*Navy*/"#000080",
+												  /*Plum*/"#DDA0DD",/*MedOrchid*/"#BA55D3",/*DarkMagenta*/"#8B008B",/*Indigo*/"#4B0082"};
+												  
 
 	const int penCount = 6;
 
@@ -122,7 +130,12 @@ wxPanel* MyFrame::BuildControlsPanel(wxWindow* parent)
 
 	auto mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	auto text = new wxStaticText(controlsPanel, wxID_ANY, "Colors");
+	wxStaticText* text = new wxStaticText(controlsPanel, wxID_ANY, "Color Palette", wxDefaultPosition, wxDefaultSize);
+	//Sets the font's pointsize and weight to bold
+	wxFont font = text->GetFont();
+	font.SetWeight(wxFONTWEIGHT_BOLD);
+	font.SetPointSize(10);
+	text->SetFont(font);
 	mainSizer->Add(text, 0, wxALL, FromDIP(5));
 
 	auto colorPanelSizer = new wxWrapSizer(wxHORIZONTAL);
@@ -130,7 +143,8 @@ wxPanel* MyFrame::BuildControlsPanel(wxWindow* parent)
 
 	mainSizer->Add(colorPanelSizer, 0, wxALL, FromDIP(5));
 
-	text = new wxStaticText(controlsPanel, wxID_ANY, "Pens");
+	text = new wxStaticText(controlsPanel, wxID_ANY, "Pen Sizes", wxDefaultPosition, wxDefaultSize);
+	text->SetFont(font);
 	mainSizer->Add(text, 0, wxALL, FromDIP(5));
 
 	auto penPaneSizer = new wxWrapSizer(wxHORIZONTAL);
@@ -247,7 +261,7 @@ void MyFrame::SetupMainMenu()
 
 	//File Menu
 	wxMenu* fileMenu = new wxMenu();
-	fileMenu->Append(wxID_NEW); // Create a New Canvas
+	fileMenu->Append(wxID_NEW, "Main Menu"); // Create a New Canvas
 	fileMenu->Append(wxID_OPEN); // Open an existing Image
 	fileMenu->AppendSeparator();
 
@@ -268,7 +282,8 @@ void MyFrame::SetupMainMenu()
 	//editMenu->Append(wxID_REDO, "&Redo\tCtrl+Y");
 	//Custom MenuItem
 	editMenu->Append(wxID_DELETE, _("&Clear\tCtrl+D"));
-
+	
+	//KeyBoard Shortcut Implementation
 	wxAcceleratorEntry entries[3];
 	entries[0].Set(wxACCEL_CTRL, (int)'D', wxID_DELETE);
 	entries[1].Set(wxACCEL_CTRL, (int)'S', wxID_SAVEAS);

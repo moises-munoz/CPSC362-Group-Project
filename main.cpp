@@ -13,11 +13,10 @@ bool MyApp::OnInit()
 {
 	wxInitAllImageHandlers();
 	
-	//Edit this to create a Startwindow Obj
-	//MyFrame* frame = new MyFrame("EzPaint", wxDefaultPosition, wxDefaultSize);
-	//frame->Show(true);
-	StartWindow* startWindow = new StartWindow("EzPaint Launcher");
+	//Creates and opens the EzPaint Launcher Window
+	StartWindow* startWindow = new StartWindow("EzPaint Launcher", wxDefaultPosition, wxDefaultSize);
 	startWindow->Show(true);
+	startWindow->SetSize(800, 600);
 	return true;
 }
 
