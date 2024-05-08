@@ -5,8 +5,6 @@
 
 class StartWindow : public wxFrame
 {
-private:
-	int red, blue, green;
 
 public:
 	StartWindow(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -54,6 +52,7 @@ public:
 
 		//Open the Start Window
 		MyFrame* frame = new MyFrame("EzPaint", wxDefaultPosition, wxDefaultSize);
+		frame->Maximize(true);
 		frame->Show(true);
 	}
 
@@ -62,6 +61,7 @@ public:
 		Close();
 		MyFrame* frame = new MyFrame("EzPaint", wxDefaultPosition, wxDefaultSize);
 		frame->OpenXML(event);
+		frame->Maximize(true);
 		frame->Show(true);
 		
 	}

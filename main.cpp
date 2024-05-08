@@ -15,6 +15,7 @@ bool MyApp::OnInit()
 	
 	//Creates and opens the EzPaint Launcher Window
 	StartWindow* startWindow = new StartWindow("EzPaint Launcher", wxDefaultPosition, wxDefaultSize);
+	startWindow->Maximize(true);
 	startWindow->Show(true);
 	startWindow->SetSize(800, 600);
 	return true;
