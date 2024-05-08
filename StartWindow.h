@@ -2,6 +2,7 @@
 #include <wx/wx.h>
 #include "MyFrame.h"
 
+
 class StartWindow : public wxFrame
 {
 private:
@@ -36,7 +37,7 @@ public:
 		loadButton->SetForegroundColour(*wxWHITE);
 		loadButton->SetBackgroundColour(wxColour(150, 150, 150));
 		loadButton->Bind(wxEVT_BUTTON, &StartWindow::LoadImage, this);
-
+		
 		//Layout
 		wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 		sizer->AddSpacer(200);

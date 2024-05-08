@@ -115,7 +115,10 @@ void DrawingCanvas::SaveToXml()
 void DrawingCanvas::LoadFromXml()
 {
     wxFileDialog loadFileDialog(this, "Load xml", "", "",
-        "PX files (*.px)|*.px", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+       "PX files (*.px)|*.px", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    
+    //wxFileDialog loadFileDialog(this, "Load xml", "", "",
+        //"Image files (*.png;*.px)|*.png;*.px", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if (loadFileDialog.ShowModal() == wxID_CANCEL)
         return;

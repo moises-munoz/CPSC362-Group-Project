@@ -72,7 +72,7 @@ private:
 												  /*Plum*/"#DDA0DD",/*MedOrchid*/"#BA55D3",/*DarkMagenta*/"#8B008B",/*Indigo*/"#4B0082"};
 												  
 
-	const int penCount = 6;
+	const int penCount = 9;
 
 	const std::string lightBackground = "#f4f3f3";
 	const std::string darkBackground = "#2c2828";
